@@ -55,18 +55,18 @@ class _HomePageState extends State<HomePage> {
   final _rad = Random();
 
   void handleclick() {
-    setState(() {
+    setState(() { // method in state
       //ใช้กับตัวแปรที่อยากให้เปลี่ยนแปลงได้ update ค่า
       //refesh when imprement success
 
       // Solution
-       var rndindex = _rad.nextInt(_quotes.length);
-       var newq =_quotes[rndindex];
+      var rndindex = _rad.nextInt(_quotes.length);
+      var newq =_quotes[rndindex];
       while(newq == _quote){
         rndindex = _rad.nextInt(_quotes.length);
         newq = _quotes[rndindex];
       }
-       _quote = newq;
+        _quote = newq;
       // END Solution
     });
   }
