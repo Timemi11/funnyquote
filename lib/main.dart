@@ -25,7 +25,7 @@ class FunnyQuotesApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {// ถ้าต้องการเปลี่ยนแปลงค่าได้ควรใช้ statefullwidget
   const HomePage({super.key});
 
   @override
@@ -33,7 +33,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const List<String> quotes = [
+  static const List<String> _quotes = [
     "แคปชั่นไม่รู้ แต่แคบหมูไม่แน่",
     "อยากมีคนใส่ใจ ที่ไม่ใช่ป้าข้างบ้าน",
     "ใจไม่ดำหรอกจ้ะ ขอบตาต่างหากที่ดำ",
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     "ไม่ค่อยหลายใจ ส่วนมากจะหลายขวด",
     "เหมาะกับการอยู่ในวงเหล้า มากกว่าการเข้าไปอยู่ในใจใคร",
   ];
-  static const List<Color> colors = [
+  static const List<Color> _colors = [
     Colors.amberAccent,
     Colors.blue,
     Colors.lightGreenAccent,
@@ -49,52 +49,49 @@ class _HomePageState extends State<HomePage> {
     Colors.purpleAccent,
   ];
 
-  var colorrnd = colors[0];
-  var quote = quotes[0];
-  var precolor = 0;
-  var preindex = 0;
-  var rad = Random();
+//can private (method,variable) by add "_" prefix on name
+  var _colorrnd = _colors[0]; //state variable is variable in class
+  var _quote = _quotes[0];
+  final _rad = Random();
 
   void handleclick() {
     setState(() {
+      //ใช้กับตัวแปรที่อยากให้เปลี่ยนแปลงได้ update ค่า
       //refesh when imprement success
-      var rndindex = rad.nextInt(quotes.length);
-      if (rndindex == preindex) {
-        // print("it's match");
-        // print("before : ${rndindex}");
-        rndindex = rad.nextInt(quotes.length);
-        // print("after : ${rndindex}");
-        quote = quotes[rndindex];
-        preindex = rndindex;
-        return;
+
+      // Solution
+       var rndindex = _rad.nextInt(_quotes.length);
+       var newq =_quotes[rndindex];
+      while(newq == _quote){
+        rndindex = _rad.nextInt(_quotes.length);
+        newq = _quotes[rndindex];
       }
-      quote = quotes[rndindex];
-      preindex = rndindex;
+       _quote = newq;
+      // END Solution
     });
   }
 
   void randomcolor() {
     setState(() {
       //refesh when imprement success
-      var rndcolor = rad.nextInt(colors.length);
-      if (rndcolor == precolor) {
-        rndcolor = rad.nextInt(colors.length);
-        colorrnd = colors[rndcolor];
-        precolor = rndcolor;
-        return;
+      var rndcolor = _rad.nextInt(_colors.length);
+      var newc = _colors[rndcolor];
+      while(newc == _colorrnd){
+        rndcolor = _rad.nextInt(_colors.length);
+        newc = _colors[rndcolor];
       }
-      colorrnd = colors[rndcolor];
-      precolor = rndcolor;
+      _colorrnd = newc;
+
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    //const ใส่ตรง literal ที่มีค่าแน่นอนไม่ปลี่ยนแปลง
-
+  Widget build(BuildContext context) { //layout app
+    //const ใส่ตรง literal ที่มีค่าแน่นอนไม่ต้องการจะเปลี่ยนแปลงตลอด
     return Scaffold(
       // Scaffold is widget help for layout
       appBar: AppBar(title: const Text("คำคมกวนๆ")),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //arrow function of dart
@@ -102,15 +99,16 @@ class _HomePageState extends State<HomePage> {
           randomcolor();
           //
         },
-        child: const Text("สุ่มคำคม"),
+        child: const Text("สุ่มคำคม",textAlign: TextAlign.center,),
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(
             child: Text(
-          quote,
+          _quote,
           style: TextStyle(
-            color: colorrnd,
+            color: _colorrnd,
             fontSize: 50,
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.w900,
